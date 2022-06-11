@@ -42,6 +42,8 @@ class getToken extends Controller {
           };
         }
       }
+      // jwt.verify(accessToken,secret); //解密
+
       ctx.body = reqState
     } catch (error) {
       console.log(error);
