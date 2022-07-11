@@ -1,9 +1,10 @@
 const jwt = require('jsonwebtoken');
+const whiteLis = require('../../config/whiteListConfig.js') //路由白名单
 module.exports = (options, app) => {
   return async function tokenAuthentication(ctx, next) {
     try {
-      const url = ctx.request.url;
-      if (url === '/' || url === '/getToken') {
+      // 如果存在白名单里的路由 不需要验证token
+      if (whiteLis.indexOf(ctx.request.url)>-1) {
         await next();
         return;
       }
@@ -13,9 +14,7 @@ module.exports = (options, app) => {
           secret,
           expiresIn
         } = app.config
-
         // const playload = jwt.decode(token);
-
         let ok = true;
         // const playload1 = jwt.verify(token, secret); //解密
         jwt.verify(token, secret, (err, decoded) => {
@@ -28,7 +27,7 @@ module.exports = (options, app) => {
             ok = false;
           } else {
             const isExpries = decoded.exp * 1000 - new Date().getTime()
-            console.log(`token过期时间 还有${isExpries / 1000}秒`)
+            // console.log(`token过期时间 还有${isExpries / 1000}秒`)
           }
         })
         if (ok) await next()

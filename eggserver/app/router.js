@@ -24,4 +24,7 @@ module.exports = app => {
   router.post('/registUser', controller.myProject.blog.registUser);
   // 用户信息
   router.get('/getUserList', controller.myProject.user.getUserList);
+  router.get('/getUserInfo', controller.myProject.user.getUserInfo);
+  // 图片上传
+  router.post('/uploadImg', controller.myProject.upload.uploadImg);
 };
